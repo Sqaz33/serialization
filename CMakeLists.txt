@@ -5,9 +5,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 project(serializiation)
 
-find_package(Boost REQUIRED COMPONENTS serialization)
+# find_package(Boost REQUIRED COMPONENTS serialization)
 
-add_executable(main src/main.cpp)
+file(GLOB_RECURSE SRCS "./src/*.cpp")
 
-target_link_libraries(main PRIVATE Boost::serialization)
+add_executable(main ${SRCS})
+
+# target_link_libraries(main PRIVATE Boost::serialization)
 

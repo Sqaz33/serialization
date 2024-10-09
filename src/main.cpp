@@ -4,8 +4,10 @@
 #include <fstream>
 #include <istream>
 
-#include "boost/archive/text_oarchive.hpp" 
-#include "boost/archive/text_iarchive.hpp" 
+#include "objec_model/object_model.hpp"
+
+// #include "boost/archive/text_oarchive.hpp" 
+// #include "boost/archive/text_iarchive.hpp" 
 
 
 // struct P {
@@ -85,18 +87,28 @@
 //     std::vector<int> v;
 // };
 
-void f(std::istream& is) {
-    while (is) {
-        int8_t byte;
-        is >> byte;
-        std::cout << byte << ' ';
-    }
+// struct S {
 
-}
+// int x = 1;
+
+
+// };
+
+// void f(std::istream& is) {
+//     while (is) {
+//         int8_t byte;
+//         is >> byte;
+//         std::cout << byte << ' ';
+//     }
+
+// }
 
 int main(int argc, char** argv) {
-    std::ifstream ifs("D:\\serialization\\test.txt");
-    f(ifs);
+    // std::ifstream ifs("D:\\serialization\\test.txt");
+    // f(ifs);
+    
+    int d = 1;
+    object_model::Field f("d", d);
 
     (void) argc;
     (void) argv;
