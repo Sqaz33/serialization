@@ -3,8 +3,12 @@
 #include <format>
 #include <fstream>
 #include <istream>
+#include <memory>
+#include <vector>
 
 #include "objec_model/object_model.hpp"
+#include "objec_model/utilities.hpp"
+
 
 // #include "boost/archive/text_oarchive.hpp" 
 // #include "boost/archive/text_iarchive.hpp" 
@@ -104,11 +108,34 @@
 // }
 
 int main(int argc, char** argv) {
+    using namespace object_model;
+    using namespace utilities;
+
     // std::ifstream ifs("D:\\serialization\\test.txt");
     // f(ifs);
-    
-    int d = 1;
-    object_model::Field f("d", d);
+    {    
+        int d = 1;
+        Field f("d", d);
+        
+        std::vector<Byte> bytes;
+        auto it = std::back_inserter(bytes);
+        f.pack(it);
+
+        std::ofstream file("hi.abc");
+
+        for (auto c : bytes) {
+            file << c;
+        }
+        file.close();
+    }
+
+    {
+        Field f;
+        std::ifstream file("hi.abc");
+        f.unpack(file);
+        file.close();
+    }
+
 
     (void) argc;
     (void) argv;

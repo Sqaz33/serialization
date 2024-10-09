@@ -37,7 +37,7 @@ public:
     }
     
     virtual void pack(std::back_insert_iterator<std::vector<utilities::Byte>>& bufferInserter) const = 0;
-    virtual void unpack(std::istream& is) const = 0;
+    virtual void unpack(std::istream& is) = 0;
 protected:
     int8_t m_wrapper = 0;
     int32_t nameLength = 0;
@@ -120,7 +120,7 @@ public:
     }
 
     void pack(std::back_insert_iterator<std::vector<utilities::Byte>>& bufferInserter) const override;
-    void unpack(std::istream& is) const override {};
+    void unpack(std::istream& is) override;
 
 private:
     int8_t type = 0;
@@ -139,7 +139,7 @@ public:
     std::shared_ptr<Field> getEntitieByName(std::string name);
 
     void pack(std::back_insert_iterator<std::vector<utilities::Byte>>& bufferInserter) const override;
-    void unpack(std::istream& is) const override {};
+    void unpack(std::istream& is) override;
 
 private:
     int32_t entitiesCount = 0;

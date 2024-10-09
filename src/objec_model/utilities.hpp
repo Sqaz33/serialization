@@ -29,7 +29,6 @@ void encode(
     }
 }
 
-
 template <>
 inline void encode<double>(
     std::back_insert_iterator<std::vector<Byte>>& bufferInserter,
@@ -103,12 +102,7 @@ void decode(std::istream& in, T& value) {
 
 // decode array in file
 template<class T>
-inline void decode(
-    std::istream& in, 
-    std::vector<T>& value, 
-    size_t valueLength
-) 
-{
+inline void decode(std::istream& in, std::vector<T>& value, int32_t valueLength) {
     Byte byte;
     value.clear();
     for (size_t i = 0; i < valueLength; ++i) {
@@ -119,7 +113,7 @@ inline void decode(
 
 // decode string in file
 template<class T>
-inline void decode(std::istream& in, std::string& string, size_t stringLength) {  
+inline void decode(std::istream& in, std::string& string, int32_t stringLength) {  
     string.clear();
     std::vector<char> charStr(stringLength);
     decode<char>(in, charStr, stringLength);
