@@ -22,11 +22,11 @@ void Root::pack(std::back_insert_iterator<std::vector<utilities::Byte>>& bufferI
     encode(bufferInserter, m_name);
 }
 
-void Root::unpack(std::istream& is) {
+void Root::unpack(std::vector<utilities::Byte>::iterator& it) {
     using namespace utilities;
-    decode<int8_t>(is, m_wrapper);
-    decode<int32_t>(is, nameLength);
-    decode<std::string>(is, m_name, nameLength);
+    decode<int8_t>(it, m_wrapper);
+    decode<int32_t>(it, nameLength);
+    decode<std::string>(it, m_name, nameLength);
 }
 
 //########################## Field ##########################
@@ -38,12 +38,12 @@ void Field::pack(std::back_insert_iterator<std::vector<utilities::Byte>>& buffer
     encode<utilities::Byte>(bufferInserter, data);
 }
 
-void Field::unpack(std::istream& is) {
+void Field::unpack(std::vector<utilities::Byte>::iterator& it) {
     using namespace utilities;
-    Root::unpack(is);
-    decode<int8_t>(is, type);
-    decode<int32_t>(is, dataCount);
-    decode<Byte>(is, data, dataCount);
+    Root::unpack(it);
+    decode<int8_t>(it, type);
+    decode<int32_t>(it, dataCount);
+    decode<Byte>(it, data, dataCount);
 }
 
 
@@ -61,14 +61,14 @@ void Object::pack(std::back_insert_iterator<std::vector<utilities::Byte>>& buffe
     }
 }
 
-void Object::unpack(std::istream& is) {
-    Root::unpack(is);
-    utilities::decode<int32_t>(is, entitiesCount);
+void Object::unpack(std::vector<utilities::Byte>::iterator& it) {
+    Root::unpack(it);
+    utilities::decode<int32_t>(it, entitiesCount);
 
     std::shared_ptr<Field> p;
     for (int32_t i = 0; i < entitiesCount; ++i) {
         p = std::make_shared<Field>();
-        p->unpack(is);
+        p->unpack(it);
         entities.push_back(p);
     }
 }

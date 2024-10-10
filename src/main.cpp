@@ -6,9 +6,9 @@
 #include <memory>
 #include <vector>
 
-#include "objec_model/object_model.hpp"
-#include "objec_model/utilities.hpp"
-
+#include "object_model/object_model.hpp"
+#include "object_model/utilities.hpp"
+#include "serialization.hpp"
 
 // #include "boost/archive/text_oarchive.hpp" 
 // #include "boost/archive/text_iarchive.hpp" 
@@ -113,29 +113,13 @@ int main(int argc, char** argv) {
 
     // std::ifstream ifs("D:\\serialization\\test.txt");
     // f(ifs);
-    {    
-        int d = 1;
-        Field f("d", d);
-        
-        std::vector<Byte> bytes;
-        auto it = std::back_inserter(bytes);
-        f.pack(it);
 
-        std::ofstream file("hi.abc");
+    std::ofstream file("hi.abc");
 
-        for (auto c : bytes) {
-            file << c;
-        }
-        file.close();
-    }
-
-    {
-        Field f;
-        std::ifstream file("hi.abc");
-        f.unpack(file);
-        file.close();
-    }
-
+    serialization::Serialization ser(file);
+    int i = 0;
+    ser.addField("i", i);
+    ser.save();
 
     (void) argc;
     (void) argv;
