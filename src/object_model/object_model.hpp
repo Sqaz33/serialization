@@ -37,10 +37,11 @@ public:
     }
     
     virtual void pack(std::back_insert_iterator<std::vector<utilities::Byte>>& bufferInserter) const = 0;
-    virtual void unpack(std::vector<utilities::Byte>::iterator& it) = 0;
+    virtual void unpack(std::vector<utilities::Byte>::const_iterator& it) = 0;
+    
 protected:
     int8_t m_wrapper = 0;
-    int32_t nameLength = 0;
+    size_t nameLength = 0;
     std::string m_name;
 };
 
@@ -85,7 +86,8 @@ public:
             throw std::logic_error("Attempt to obtain a primitive.");
         }
         T value;
-        utilities::decode<T>(data.begin(), value);
+        auto constIt = data.cbegin();
+        utilities::decode<T>(constIt, value);
         return value;
     }
 
@@ -120,11 +122,11 @@ public:
     }
 
     void pack(std::back_insert_iterator<std::vector<utilities::Byte>>& bufferInserter) const override;
-    void unpack(std::vector<utilities::Byte>::iterator& it) override;
+    void unpack(std::vector<utilities::Byte>::const_iterator& it) override;
 
 private:
     int8_t type = 0;
-    int32_t dataCount = 0;
+    size_t dataCount = 0;
     std::vector<utilities::Byte> data;
 };
 
@@ -154,11 +156,20 @@ public:
         ++entitiesCount;
     }
 
+    template <>
+    void addEntitie(std::string name, const std::string& val) {
+        entities.push_back(
+            std::make_shared<Field>(name, val)
+        );
+        ++entitiesCount;
+    }
+
+    
     void pack(std::back_insert_iterator<std::vector<utilities::Byte>>& bufferInserter) const override;
-    void unpack(std::vector<utilities::Byte>::iterator& it) override;
+    void unpack(std::vector<utilities::Byte>::const_iterator& it) override;
 
 private:
-    int32_t entitiesCount = 0;
+    size_t entitiesCount = 0;
     std::vector<std::shared_ptr<Field>> entities;
 };
 

@@ -88,9 +88,9 @@ inline void addByteTOEnd(T& val, int8_t byte) {
     }
 } 
 
-// decode val in file
+// decode val
 template<class T>
-void decode(std::vector<utilities::Byte>::iterator& it, T& value) {
+void decode(std::vector<utilities::Byte>::const_iterator& it, T& value) {
     Byte byte;
     value = 0;
     for (size_t i = 0; i < sizeof(T); ++i) {
@@ -99,9 +99,9 @@ void decode(std::vector<utilities::Byte>::iterator& it, T& value) {
     }
 }
 
-// decode array in file
+// decode array
 template<class T>
-inline void decode(std::vector<utilities::Byte>::iterator& it, std::vector<T>& value, int32_t valueLength) {
+inline void decode(std::vector<utilities::Byte>::const_iterator& it, std::vector<T>& value, size_t valueLength) {
     Byte byte;
     value.clear();
     for (size_t i = 0; i < valueLength; ++i) {
@@ -110,24 +110,13 @@ inline void decode(std::vector<utilities::Byte>::iterator& it, std::vector<T>& v
     }
 }
 
-// decode string in file
+// decode string
 template<class T>
-inline void decode(std::vector<utilities::Byte>::iterator& it, std::string& string, int32_t stringLength) {  
+inline void decode(std::vector<utilities::Byte>::const_iterator& it, std::string& string, size_t stringLength) {  
     string.clear();
     std::vector<char> charStr(stringLength);
     decode<char>(it, charStr, stringLength);
     std::copy(charStr.begin(), charStr.end(), std::back_inserter(string));
-}
-
-// decode value in byte array
-template<class T>
-inline void decode(std::vector<Byte>::const_iterator& it, T& value) {
-    Byte byte;
-    value = 0;
-    for (int i = 0; i < sizeof(T); ++i) {
-        byte = *(it++);
-        addByteTOEnd(value, byte);
-    }
 }
 
 } // namespace utilities
